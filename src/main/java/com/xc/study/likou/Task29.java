@@ -1,5 +1,118 @@
-package com.xc.study.likou;/**
-* @author bryant
-* @date 2025/8/21
-**/public class Task29 {
+package com.xc.study.likou;
+
+/**
+ * @author bryant
+ * @date 2025/8/21
+ **/
+
+/**
+ * 给你两个整数，被除数 dividend 和除数 divisor。将两数相除，要求 不使用 乘法、除法和取余运算。
+ * <p>
+ * 整数除法应该向零截断，也就是截去（truncate）其小数部分。例如，8.345 将被截断为 8 ，-2.7335 将被截断至 -2 。
+ * <p>
+ * 返回被除数 dividend 除以除数 divisor 得到的 商 。
+ * <p>
+ * 注意：假设我们的环境只能存储 32 位 有符号整数，其数值范围是 [−231,  231 − 1] 。本题中，如果商 严格大于 231 − 1 ，则返回 231 − 1 ；如果商 严格小于 -231 ，则返回 -231 。
+ * <p>
+ * <p>
+ * <p>
+ * 示例 1:
+ * <p>
+ * 输入: dividend = 10, divisor = 3
+ * 输出: 3
+ * 解释: 10/3 = 3.33333.. ，向零截断后得到 3 。
+ * 示例 2:
+ * <p>
+ * 输入: dividend = 7, divisor = -3
+ * 输出: -2
+ * 解释: 7/-3 = -2.33333.. ，向零截断后得到 -2
+ */
+public class Task29 {
+    public static void main(String[] args) {
+        System.out.println(divide(-2147483648, 2));
+    }
+
+
+    public static int divide(int dividend, int divisor) {
+        if (dividend == Integer.MIN_VALUE) {
+            if (divisor == -1) {
+                return Integer.MAX_VALUE;
+            }
+            if (divisor == 1) {
+                return Integer.MIN_VALUE;
+            }
+        }
+        boolean flag = (dividend ^ divisor) < 0;
+        //全都变成负数计算
+        if (dividend > 0) {
+            dividend = -dividend;
+        }
+        if (divisor > 0) {
+            divisor = -divisor;
+        }
+        int result = 0;
+        while (dividend <= divisor) {
+            int temp = divisor;//临时变量，存储当前除数
+            int mult = 1;//倍数
+            while (dividend - temp <= temp) {
+                temp <<= 1;
+                mult <<= 1;
+            }
+            dividend = dividend - temp;
+            result += mult;
+        }
+        if (flag) {
+            result = -result;
+        }
+        return result;
+
+    }
+
+
+    public static int divide1(int dividend, int divisor) {
+        int sum = 0, result = 0;
+        if (dividend < 0) {
+            if (divisor < 0) {
+                if (divisor == -1) {
+                    return dividend == Integer.MIN_VALUE ? Integer.MAX_VALUE : -dividend;
+                }
+                while (sum >= dividend) {
+                    sum += divisor;
+                    result++;
+                }
+                return result - 1;
+            } else {
+                if (divisor == 1) {
+                    return dividend;
+                }
+                dividend = -dividend;
+                while (sum <= dividend) {
+                    sum += divisor;
+                    result++;
+                }
+                return -result + 1;
+            }
+        } else {
+            if (divisor < 0) {
+                if (divisor == -1) {
+                    return -dividend;
+                }
+                dividend = -dividend;
+                while (sum >= dividend) {
+                    sum += divisor;
+                    result++;
+                }
+                return -result + 1;
+            } else {
+                if (divisor == 1) {
+                    return dividend;
+                }
+                while (sum <= dividend) {
+                    sum += divisor;
+                    result++;
+                }
+                return result - 1;
+            }
+        }
+    }
 }

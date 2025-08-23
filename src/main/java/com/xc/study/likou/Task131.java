@@ -7,7 +7,7 @@ package com.xc.study.likou;
  */
 public class Task131 {
     public static void main(String[] args) {
-        System.out.printf(String.valueOf(resolution(3)));
+        System.out.printf(String.valueOf(resolution(12)));
     }
 
     public static int resolution(int bamboo_len) {
